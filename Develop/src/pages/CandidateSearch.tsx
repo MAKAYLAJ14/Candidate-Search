@@ -1,17 +1,17 @@
-import {  type FormEvent, useState } from 'react';
+import {  type FormEvent, useState, useEffect } from 'react';
 import { searchGithubUser } from '../api/API';
 import type Candidate from '../interfaces/Candidate.interface';
 import CandidateCard from '../components/CandidateCard';
 
 const CandidateSearch = () => {
   const [currentCandidate, setCurrentCandidate] = useState<Candidate>({
-    Name: '',
-    Username: '',
-    Location: '',
-    Avatar: '',
-    Email: '',
-    Html_Url: '',
-    Company: '',
+    name: '',
+    username: '',
+    location: '',
+    avatar_url: '',
+    email: '',
+    html_url: '',
+    company: '',
   });
 
   const [searchInput, setSearchInput] = useState<string>('');
@@ -28,10 +28,19 @@ const CandidateSearch = () => {
 
   const searchForCandidateByName = async (event: FormEvent, candidate_name: string) => {
     event.preventDefault();
-    const data: Candidate = await searchGithubUser (candidate_name);
+    const data: Candidate = await searchGithubUser(candidate_name);
 
     setCurrentCandidate(data);
   };
+  
+  useEffect(() => {
+    console.log(currentCandidate);
+  }, [currentCandidate])
+
+
+
+
+
 
   return (  
     <>
@@ -54,10 +63,13 @@ const CandidateSearch = () => {
           </button>
         </form>
       </section>
+      {currentCandidate.html_url ? 
       <CandidateCard
         currentCandidate={currentCandidate}
         addToCandidateList={addToCandidateList}
       />
+      : <p>'No Candidate found!'</p>
+      }
     </>
   );
 };

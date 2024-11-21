@@ -19,7 +19,7 @@ const SavedCandidates = () => {
           parsedCandidates = JSON.parse(storedCandidates);
         }
         parsedCandidates = parsedCandidates.filter(
-          (candidate) => candidate.Name !== name
+          (candidate) => candidate.name !== name
         );
         setCandidates(parsedCandidates);
         localStorage.setItem('Candidate', JSON.stringify(parsedCandidates));
@@ -42,7 +42,7 @@ const SavedCandidates = () => {
         {candidates.length > 0 ? (
           candidates.map((candidate) => (
             <CandidateCard
-              key={candidate.Name} // Use a unique key for each candidate
+              key={candidate.name} // Use a unique key for each candidate
               currentCandidate={candidate} // Pass the individual candidate
               removeFromStorage={removeFromStorage}
               onCandidateList={true} // Set this prop to true if the candidate is in the list

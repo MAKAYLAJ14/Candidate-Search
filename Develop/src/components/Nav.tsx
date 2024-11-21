@@ -20,9 +20,9 @@ const Nav = () => {
         <li className='nav-item'>
           <h2>
             <Link
-              to='/PotentialCandidates'
+              to='/SavedCandidates'
               className={
-                currentPage === '/PotentialCandidates' ? 'nav-link active' : 'nav-link'
+                currentPage === '/SavedCandidates' ? 'nav-link active' : 'nav-link'
               }
             >
               Potential Candidates
