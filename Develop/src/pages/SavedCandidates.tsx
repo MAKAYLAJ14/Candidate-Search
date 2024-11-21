@@ -1,56 +1,58 @@
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import type Candidate from '../interfaces/Candidate.interface';
+import CandidateCard from '../components/CandidateCard';
 
 const SavedCandidates = () => {
-    const [filmsToWatch, setFilmsToWatch] = useState<Candidate[]>([]);
-  
+    const [candidates, setCandidates] = useState<Candidate[]>([]);
+
     const removeFromStorage = (
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
-      currentlyOnWatchList: boolean | null | undefined,
-      currentlyOnSeenItList: boolean | null | undefined,
-      title: string | null
+      currentlyOnCandidateList: boolean | null | undefined,
+      name: string | null
     ) => {
       e.preventDefault();
-      if (currentlyOnWatchList) {
-        let parsedFilmsToWatch: Candidate[] = [];
-  
-        const storedFilmsToWatch = localStorage.getItem('filmsToWatch');
-        if (typeof storedFilmsToWatch === 'string') {
-          parsedFilmsToWatch = JSON.parse(storedFilmsToWatch);
+      if (currentlyOnCandidateList) {
+        let parsedCandidates: Candidate[] = [];
+        const storedCandidates = localStorage.getItem('Candidate');
+        if (typeof storedCandidates === 'string') {
+          parsedCandidates = JSON.parse(storedCandidates);
         }
-        parsedFilmsToWatch = parsedFilmsToWatch.filter(
-          (Candidate) => Candidate.Name !== title
+        parsedCandidates = parsedCandidates.filter(
+          (candidate) => candidate.Name !== name
         );
-        setFilmsToWatch(parsedFilmsToWatch);
-        localStorage.setItem('filmsToWatch', JSON.stringify(parsedFilmsToWatch));
-      } else if (currentlyOnSeenItList) {
-        let parsedAlreadySeenFilms: Candidate[] = [];
-        const storedAlreadySeenFilms = localStorage.getItem('alreadySeenFilms');
-        if (typeof storedAlreadySeenFilms === 'string') {
-          parsedAlreadySeenFilms = JSON.parse(storedAlreadySeenFilms);
-        }
-        parsedAlreadySeenFilms = parsedAlreadySeenFilms.filter(
-          (Candidate) => Candidate.Name !== title
-        );
-        localStorage.setItem(
-          'alreadySeenFilms',
-          JSON.stringify(parsedAlreadySeenFilms)
-        );
-      }
+        setCandidates(parsedCandidates);
+        localStorage.setItem('Candidate', JSON.stringify(parsedCandidates));
+      } 
     };
-  
+
     useEffect(() => {
-      const parsedFilmsToWatch = JSON.parse(
-        localStorage.getItem('filmsToWatch') as string
-      );
-      setFilmsToWatch(parsedFilmsToWatch);
+      const storedCandidates = localStorage.getItem('Candidate');
+      if (storedCandidates) {
+        const parsedCandidates = JSON.parse(storedCandidates);
+        if (Array.isArray(parsedCandidates)) {
+          setCandidates(parsedCandidates);
+        }
+      }
     }, []);
-  return (
-    <>
-      <h1>Potential Candidates</h1>
-    </>
-  );
+
+    return (
+      <>
+        <h1>Potential Candidates</h1>
+        {candidates.length > 0 ? (
+          candidates.map((candidate) => (
+            <CandidateCard
+              key={candidate.Name} // Use a unique key for each candidate
+              currentCandidate={candidate} // Pass the individual candidate
+              removeFromStorage={removeFromStorage}
+              onCandidateList={true} // Set this prop to true if the candidate is in the list
+            />
+          ))
+        ) : (
+          <h2>No saved candidates found.</h2>
+        )}
+      </>
+    );
 };
 
 export default SavedCandidates;
