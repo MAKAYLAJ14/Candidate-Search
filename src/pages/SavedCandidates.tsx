@@ -29,7 +29,7 @@ const SavedCandidates = () => {
     };
 
     useEffect(() => {
-      const storedCandidates = localStorage.getItem('Candidate');
+      const storedCandidates = localStorage.getItem('Candidates');
       console.log('Stored Candidates:', storedCandidates);
       if (storedCandidates) {
         const parsedCandidates = JSON.parse(storedCandidates);
