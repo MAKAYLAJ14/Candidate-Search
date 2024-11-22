@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import type Candidate from '../interfaces/Candidate.interface';
 import CandidateCard from '../components/CandidateCard';
 
+
 const SavedCandidates = () => {
     const [candidates, setCandidates] = useState<Candidate[]>([]);
 
@@ -12,7 +13,7 @@ const SavedCandidates = () => {
       name: string | null
     ) => {
       e.preventDefault();
-      if (currentlyOnCandidateList) {
+      if (currentlyOnCandidateList && name) {
         let parsedCandidates: Candidate[] = [];
         const storedCandidates = localStorage.getItem('Candidate');
         if (typeof storedCandidates === 'string') {
@@ -21,6 +22,7 @@ const SavedCandidates = () => {
         parsedCandidates = parsedCandidates.filter(
           (candidate) => candidate.name !== name
         );
+        parsedCandidates = parsedCandidates.filter(candidate => candidate.name !== name);
         setCandidates(parsedCandidates);
         localStorage.setItem('Candidate', JSON.stringify(parsedCandidates));
       } 
@@ -28,8 +30,10 @@ const SavedCandidates = () => {
 
     useEffect(() => {
       const storedCandidates = localStorage.getItem('Candidate');
+      console.log('Stored Candidates:', storedCandidates);
       if (storedCandidates) {
         const parsedCandidates = JSON.parse(storedCandidates);
+        console.log('Parsed Candidates:', parsedCandidates);
         if (Array.isArray(parsedCandidates)) {
           setCandidates(parsedCandidates);
         }

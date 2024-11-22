@@ -82,6 +82,12 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0em 0em;
+}
+
+img {
+  width: 185px; 
+  height: auto;
 }
 
 tr {
@@ -97,7 +103,9 @@ tbody tr:nth-child(odd) {
 .nav {
   display: flex;
   justify-content: flex-start;
-  padding: 1em 2em;
+  position: absolute;
+  top: -14px;
+  left: -37px;
 }
 
 .nav-item {

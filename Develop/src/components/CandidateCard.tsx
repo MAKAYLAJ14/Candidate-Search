@@ -5,7 +5,8 @@ import { CgPlayListAdd } from 'react-icons/cg';
 
 type CandidateCardProps = {
   currentCandidate: Candidate;
-  addToCandidateList?: (() => void) | null;
+  onSave?: () => void; // Function to save the candidate
+  onNext?: () => void; // Function to go to the next candidate
   onCandidateList?: boolean | null;
   removeFromStorage?:
     | ((
@@ -18,7 +19,8 @@ type CandidateCardProps = {
 
 const CandidateCard = ({
   currentCandidate,
-  addToCandidateList,
+  onSave,
+  onNext,
   onCandidateList,
   removeFromStorage,
 }: CandidateCardProps) => {
@@ -44,10 +46,16 @@ const CandidateCard = ({
               <strong>Company:</strong> {currentCandidate.company}
             </p>
           </article>
-          {onCandidateList ? (
-            <aside className='icons'>
+          <aside className='icons'> 
+            <CgPlayListAdd
+              style={{ fontSize: '30px', cursor: 'pointer' }}
+              onClick={onSave} // Call the onSave function when "+" is clicked
+            />
+            <button onClick={onNext}>+</button> {/* Button for saving candidate */}
+            <button onClick={onNext}>-</button> {/* Button for next candidate without saving */}
+            {onCandidateList && (
               <ImCross
-                style={{ fontSize: '40px', cursor: 'pointer' }}
+                style={{ fontSize: '20px', cursor: 'pointer' }}
                 onClick={(e: React.MouseEvent<SVGSVGElement, MouseEvent>) =>
                   removeFromStorage?.(
                     e,
@@ -56,15 +64,8 @@ const CandidateCard = ({
                   )
                 }
               />
-            </aside>
-          ) : (
-            <aside className='icons'>
-              <CgPlayListAdd
-                style={{ fontSize: '50px', cursor: 'pointer' }}
-                onClick={() => addToCandidateList?.()}
-              />
-            </aside>
-          )}
+            )}
+          </aside> 
         </section>
       ) : (
         <h1 style={{ margin: '16px 0' }}>Please search for a Candidate.</h1>
